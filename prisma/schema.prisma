@@ -11,11 +11,24 @@ datasource db {
 }
 
 model User{
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
   fullname String
   email String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  games Game[]
 
-  @@map(name:"users")
+  @@map("users")
+}
+
+model Game{
+  id String @id @default(uuid())
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+
+  @@map("games")
 }
