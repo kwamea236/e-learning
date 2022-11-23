@@ -8,13 +8,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const ConnectDB_1 = __importDefault(require("./ConnectDB"));
+const ConnectDB_js_1 = __importDefault(require("./ConnectDB.js"));
 const http_status_codes_1 = require("http-status-codes");
 const body_parser_1 = __importDefault(require("body-parser"));
-const Handlers_1 = require("./Handlers");
+const Handlers_js_1 = require("./Handlers.js");
 const cors_1 = __importDefault(require("cors"));
 // connect database message
-(0, ConnectDB_1.default)();
+(0, ConnectDB_js_1.default)();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
@@ -22,11 +22,11 @@ app.use(body_parser_1.default.urlencoded({
     extended: true
 }));
 const PORT = process.env.PORT;
-app.get("/api", Handlers_1.getAllUsers);
-app.get("/api/:id", Handlers_1.getUserById);
-app.post("/api", Handlers_1.postUser);
-app.put("/api/:id", Handlers_1.updateUser);
-app.delete("/api/:id", Handlers_1.deleteUser);
+app.get("/api", Handlers_js_1.getAllUsers);
+app.get("/api/:id", Handlers_js_1.getUserById);
+app.post("/api", Handlers_js_1.postUser);
+app.put("/api/:id", Handlers_js_1.updateUser);
+app.delete("/api/:id", Handlers_js_1.deleteUser);
 /**
  * Custom error page
  */

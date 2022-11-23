@@ -4,10 +4,10 @@
  */
 
 import express, { Express, Request, Response } from "express";
-import connectDB from "./ConnectDB";
+import connectDB from "./ConnectDB.js";
 import { StatusCodes } from "http-status-codes";
-import bodyParser from "body-parser";
-import { deleteUser, getAllUsers, getUserById, postUser, updateUser } from "./Handlers";
+import bodyParser from "body-parser"
+import { deleteUser, getAllUsers, getUserById, postUser, updateUser } from "./Handlers.js";
 import cors from "cors";
  
 

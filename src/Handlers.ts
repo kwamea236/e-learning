@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import { prisma } from "./ConnectDB";
+import { prisma } from "./ConnectDB.js";
 import { StatusCodes } from "http-status-codes";
 
 const getAllUsers = async (req: Request, res: Response)=>{

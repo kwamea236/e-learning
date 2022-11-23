@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.postUser = exports.getUserById = exports.getAllUsers = void 0;
-const ConnectDB_1 = require("./ConnectDB");
+const ConnectDB_js_1 = require("./ConnectDB.js");
 const http_status_codes_1 = require("http-status-codes");
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allUsers = yield ConnectDB_1.prisma.user.findMany();
+        const allUsers = yield ConnectDB_js_1.prisma.user.findMany();
         res.json(allUsers);
     }
     catch (e) {
@@ -26,7 +26,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getAllUsers = getAllUsers;
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const userById = yield ConnectDB_1.prisma.user.findUnique({
+    const userById = yield ConnectDB_js_1.prisma.user.findUnique({
         where: {
             id: id
         }
@@ -40,7 +40,7 @@ exports.getUserById = getUserById;
 const postUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { fullname, email } = req.body;
-        const postsData = yield ConnectDB_1.prisma.user.create({
+        const postsData = yield ConnectDB_js_1.prisma.user.create({
             data: {
                 fullname: fullname,
                 email: email
@@ -59,7 +59,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { fullname, email } = req.body;
         const { id } = req.params;
-        const updateUSer = yield ConnectDB_1.prisma.user.update({
+        const updateUSer = yield ConnectDB_js_1.prisma.user.update({
             where: {
                 id: id,
             },
@@ -80,7 +80,7 @@ exports.updateUser = updateUser;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const deleteUser = yield ConnectDB_1.prisma.user.delete({
+        const deleteUser = yield ConnectDB_js_1.prisma.user.delete({
             where: {
                 id: id
             }
