@@ -1,14 +1,44 @@
 "use strict";
+/**
+ * Author: Kwame Ato
+ * Date: 18th November, 2022
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const ConnectDB_js_1 = __importDefault(require("./ConnectDB.js"));
+const http_status_codes_1 = require("http-status-codes");
+const body_parser_1 = __importDefault(require("body-parser"));
+const Handlers_js_1 = require("./Handlers.js");
+const cors_1 = __importDefault(require("cors"));
+// connect database message
+(0, ConnectDB_js_1.default)();
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
+app.use(body_parser_1.default.json());
+app.use(body_parser_1.default.urlencoded({
+    extended: true
+}));
 const PORT = process.env.PORT;
-app.get("/", (req, res) => {
-    res.send("Welcom you are working");
+app.get("/api", Handlers_js_1.getAllUsers);
+app.get("/api/:id", Handlers_js_1.getUserById);
+app.post("/api", Handlers_js_1.postUser);
+app.put("/api/:id", Handlers_js_1.updateUser);
+app.delete("/api/:id", Handlers_js_1.deleteUser);
+/**
+ * Custom error page
+ */
+app.use((req, res) => {
+    res.status(http_status_codes_1.StatusCodes.NOT_FOUND);
+    res.send("404 page not found");
 });
+app.use((req, res) => {
+    res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR);
+    res.send("INTERNAL SERVER ERROR");
+});
+//server
 app.listen(PORT, () => {
-    console.log("server is running");
+    console.log(`server is running on http://localhost:${PORT}\nPress Ctl + C to terminate server`);
 });
