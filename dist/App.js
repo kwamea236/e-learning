@@ -8,4 +8,5 @@ app.get("/",(req,res)=>{
     res.send("<h1>Welcome to my component</h1>");
 })
 
+
 app.listen(PORT);
