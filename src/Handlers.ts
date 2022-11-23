@@ -3,8 +3,14 @@ import { prisma } from "./ConnectDB";
 import { StatusCodes } from "http-status-codes";
 
 const getAllUsers = async (req: Request, res: Response)=>{
-    const allUsers = await prisma.user.findMany()
-    res.json(allUsers);
+    try{
+        const allUsers = await prisma.user.findMany()
+        res.json(allUsers);
+    }catch(e){
+        console.log(e);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+        res.send("Internal Server error")
+    }
 }
 
 const getUserById = async(req: Request, res: Response)=>{
