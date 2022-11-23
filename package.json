@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rimraf dist && npx tsc",
-    "start": "node src/App.js",
+    "start": "node App.js",
     "dev": "nodemon --exec ts-node dist/App.ts",
     "migrate": "npx prisma migrate dev --create-only",
     "push": "npx prisma db push",
