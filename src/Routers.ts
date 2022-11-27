@@ -1,19 +1,20 @@
-import {Request, Response} from "express";
-import { prisma } from "./ConnectDB.js";
-import { StatusCodes } from "http-status-codes";
+import {Request, Response, Router} from "express";
+import { prisma } from "./ConnectDB";
 
-const getAllUsers = async (req: Request, res: Response)=>{
+const router = Router();
+
+router.get("/", async (req: Request, res: Response)=>{
     try{
         const allUsers = await prisma.user.findMany()
         res.json(allUsers);
     }catch(e){
         console.log(e);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+        res.status(500);
         res.send("Internal Server error")
     }
-}
+})
 
-const getUserById = async(req: Request, res: Response)=>{
+router.get("/id", async(req: Request, res: Response)=>{
     const {id} = req.params;
     const userById = await prisma.user.findUnique({
         where:{
@@ -24,9 +25,10 @@ const getUserById = async(req: Request, res: Response)=>{
         res.send("user not found");
     }
     res.json(userById)
-}
+});
 
-const postUser = async (req: Request, res: Response)=>{
+
+router.post("/", async (req: Request, res: Response)=>{
     try{
         const {fullname, email } = req.body;
         const postsData = await prisma.user.create({
@@ -38,13 +40,13 @@ const postUser = async (req: Request, res: Response)=>{
         res.send("file submited successfully");
     }catch(e){
         console.log(e)
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+        res.status(500);
         res.json({message: "Internal server error"});
     }
-}
+});
 
 
-const updateUser = async (req: Request, res: Response)=>{
+router.put("/id", async (req: Request, res: Response)=>{
     try{
         const {fullname, email} = req.body;
         const {id} = req.params;
@@ -63,12 +65,12 @@ const updateUser = async (req: Request, res: Response)=>{
 
     }catch(e){
         console.log(e);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+        res.status(500);
         res.send("STATUS-500 INTERNAL SERVER ERROR")
     }
-}
+});
 
-const deleteUser = async (req: Request, res: Response)=>{
+router.delete("/id", async (req: Request, res: Response)=>{
     try{
 
         const {id} = req.params;
@@ -83,9 +85,9 @@ const deleteUser = async (req: Request, res: Response)=>{
 
     }catch(e){
         console.log(e);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+        res.status(500);
         res.send("internal server error");
     }
-}
+})
 
-export {getAllUsers, getUserById, postUser, updateUser, deleteUser};
+export default router;

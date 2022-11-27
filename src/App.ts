@@ -4,11 +4,12 @@
  */
 
 import express, { Express, Request, Response } from "express";
-import connectDB from "./ConnectDB.js";
-import { StatusCodes } from "http-status-codes";
+import connectDB from "./ConnectDB";
 import bodyParser from "body-parser"
-import { deleteUser, getAllUsers, getUserById, postUser, updateUser } from "./Handlers.js";
 import cors from "cors";
+import router from "./Routers";
+import errorRounter from "./ErrorRouter";
+
  
 
 // connect database message
@@ -25,31 +26,13 @@ app.use(bodyParser.urlencoded({
 
 const PORT = process.env.PORT;
 
-app.get("/api",getAllUsers)
-
-app.get("/api/:id",getUserById)
-
-app.post("/api",postUser)
-
-app.put("/api/:id", updateUser)
-
-app.delete("/api/:id",deleteUser)
-
-
+app.use("/api", router);
 
 /**
  * Custom error page
  */
 
-app.use((req: Request, res: Response)=>{
-    res.status(StatusCodes.NOT_FOUND);
-    res.send("404 page not found");
-})
-
-app.use((req: Request, res: Response)=>{
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR);
-    res.send("INTERNAL SERVER ERROR");
-})
+app.use(errorRounter);
 
 
 //server
