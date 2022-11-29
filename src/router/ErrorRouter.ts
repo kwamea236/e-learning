@@ -4,8 +4,8 @@ const router = Router();
 
 router.use((req: Request, res: Response)=>{
     res.status(404);
-    res.send("404 page not found");
-})
+    res.json({message: "404 PAGE NOT FOUND"})
+});
 
 router.use((req: Request, res: Response)=>{
     res.status(500);

@@ -3,29 +3,36 @@
  * Date: 18th November, 2022
  */
 
+/**
+ * Import statement
+ */
 import express, { Express, Request, Response } from "express";
 import connectDB from "./ConnectDB";
-import bodyParser from "body-parser"
 import cors from "cors";
-import router from "./Routers";
-import errorRounter from "./ErrorRouter";
+import router from "./router/UserRouter";
+import errorRounter from "./router/ErrorRouter";
+import bodyParser from "body-parser";
 
- 
 
 // connect database message
 connectDB();
 
+
 const app: Express = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
 
 app.use(cors())
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
 
-const PORT = process.env.PORT;
 
+const PORT = process.env.PORT || 3000;
+
+
+/**
+ * route here
+ */
 app.use("/api", router);
 
 /**
@@ -39,3 +46,5 @@ app.use(errorRounter);
 app.listen(PORT, ()=>{
     console.log(`server is running on http://localhost:${PORT}\nPress Ctl + C to terminate server`);
 })
+
+export default app;
