@@ -10,7 +10,8 @@
     "migrate": "npx prisma migrate dev --create-only",
     "push": "npx prisma db push",
     "generate": "npx prisma generate",
-    "studio": "npx prisma studio"
+    "studio": "npx prisma studio",
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

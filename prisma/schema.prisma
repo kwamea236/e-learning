@@ -6,25 +6,24 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id String @id @default(uuid())
-  fullname String
-  email String @unique
+model User {
+  id        String   @id @default(uuid())
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   games Game[]
 
   @@map("users")
 }
 
-model Game{
-  id String @id @default(uuid())
-  name String
+model Game {
+  id        String   @id @default(uuid())
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
