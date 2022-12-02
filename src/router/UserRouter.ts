@@ -1,5 +1,5 @@
-import { create } from "domain";
-import {NextFunction, Request, Response, Router} from "express";
+
+import { Request, Response, Router} from "express";
 import {prisma} from "../ConnectDB"
 const router = Router();
 
