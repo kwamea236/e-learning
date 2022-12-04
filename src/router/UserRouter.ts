@@ -8,7 +8,8 @@ router.get("/user", async (req: Request, res: Response)=>{
     try{
     const allUsers = await prisma.user.findMany({
         include:{
-            games: true,
+            posts: true,
+            profile: true,
         }
     });
     return res.json(allUsers);
@@ -21,47 +22,56 @@ router.get("/user", async (req: Request, res: Response)=>{
 
 router.get("/user/:id", async(req: Request, res: Response)=>{
     const {id} = req.params;
-    const userById = await prisma.user.findUnique({
+
+    const uniqueUser = await prisma.user.findUnique({
         where:{
-            id: id
+            id
         },
         include:{
-            games: true,
+            posts: true,
+            profile: true
         }
-    });
-    if(userById === null){
-        res.send("user not found");
-    }
-    res.json(userById)
+    })
+
+    res.json(uniqueUser);
 });
 
 
 router.post("/user", async (req: Request, res: Response)=>{
-    const {name, games} = req.body;
-
-    const newUser = await prisma.user.create({
+    const {name , email, title, bio} = req.body;
+    const createUser = await prisma.user.create({
         data:{
-            name
+            name,
+            email,
+            posts: {
+                create:{title}
+            },
+            profile: {
+                create:{
+                    bio
+                }
+            }
         }
     })
 
-    res.json(await prisma.user.findMany());
+    res.json(createUser);
 });
 
 
 router.put("/user/:id", async (req: Request, res: Response)=>{
     try{
-        const {name, games} = req.body;
         const {id} = req.params;
+        const {name , email} = req.body;
 
-        const updateUSer = await prisma.user.update({
+        const updateUser = await prisma.user.update({
             where:{
-                id: id,
+                id
             },
             data:{
-                name
+                name,
+                email
             }
-        });
+        })
 
         res.send("user updated successfully");
 
@@ -74,17 +84,7 @@ router.put("/user/:id", async (req: Request, res: Response)=>{
 
 router.delete("/user/:id", async (req: Request, res: Response)=>{
     try{
-
-        const {id} = req.params;
-
-        const deleteUser = await prisma.user.delete({
-            where:{
-                id: id
-            }
-        })
-
-        res.send(`${deleteUser.name} has been deleted`);
-
+        res.send("user deleted")
     }catch(e){
         console.log(e);
         res.status(500);
