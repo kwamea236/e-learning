@@ -38,23 +38,33 @@ router.get("/user/:id", async(req: Request, res: Response)=>{
 
 
 router.post("/user", async (req: Request, res: Response)=>{
-    const {name , email, title, bio} = req.body;
-    const createUser = await prisma.user.create({
-        data:{
-            name,
-            email,
-            posts: {
-                create:{title}
-            },
-            profile: {
-                create:{
-                    bio
+    try{
+        const {name , email, title, bio} = req.body
+        const createUser = await prisma.user.create({
+            data:{
+                name,
+                email,
+                posts: {
+                    create:{title}
+                },
+                profile: {
+                    create:{
+                        bio
+                    }
                 }
             }
-        }
-    })
+        })
 
-    res.json(createUser);
+        if(createUser.email === email){
+            res.send("email already exist");
+        }
+        res.json(createUser);
+    }catch(e){
+
+        console.log(e)
+        res.status(500);
+        res.send("internal error");
+    }
 });
 
 
@@ -84,12 +94,34 @@ router.put("/user/:id", async (req: Request, res: Response)=>{
 
 router.delete("/user/:id", async (req: Request, res: Response)=>{
     try{
-        res.send("user deleted")
-    }catch(e){
-        console.log(e);
+        const {id} = req.params;
+        const deleteUser = prisma.user.delete({
+            where:{
+                id
+            }
+        });
+    
+        const deletePost = prisma.post.deleteMany({
+            where:{
+                authorId: id
+            }
+        });
+
+        const userIdDelete = prisma.profile.deleteMany({
+            where:{
+                userId: id
+            }
+        });
+
+        const transaction = await prisma.$transaction([deletePost, deleteUser,userIdDelete]);
+    
+        res.send("user deleted succcessfully");
+    }catch(err){
+        console.log(err);
         res.status(500);
         res.send("internal server error");
     }
-})
+    
+});
 
 export default router;
