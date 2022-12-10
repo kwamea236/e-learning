@@ -7,11 +7,11 @@
     "build": "rimraf dist && npx tsc",
     "start": "ts-node --watch src/App.ts",
     "dev": "nodemon --exec ts-node src/App.ts",
-    "migrate": "npx prisma migrate dev --create-only",
-    "push": "npx prisma db push",
     "generate": "npx prisma generate",
     "studio": "npx prisma studio",
-    "test": "jest --detectOpenHandles"
+    "pull": "npx prisma db pull",
+    "push": "npx prisma db push",
+    "migrate":"npx prisma migrate dev --create-only"
   },
   "keywords": [],
   "author": "",

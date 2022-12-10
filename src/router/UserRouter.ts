@@ -21,7 +21,7 @@ router.get("/user", async (req: Request, res: Response)=>{
 })
 
 router.get("/user/:id", async(req: Request, res: Response)=>{
-    const {id} = req.params;
+    const {id} = req.params
 
     const uniqueUser = await prisma.user.findUnique({
         where:{
@@ -39,10 +39,10 @@ router.get("/user/:id", async(req: Request, res: Response)=>{
 
 router.post("/user", async (req: Request, res: Response)=>{
     try{
-        const {name , email, title, bio} = req.body
+        const {username , email, title, bio} = req.body
         const createUser = await prisma.user.create({
             data:{
-                name,
+                username,
                 email,
                 posts: {
                     create:{title}
@@ -54,10 +54,6 @@ router.post("/user", async (req: Request, res: Response)=>{
                 }
             }
         })
-
-        if(createUser.email === email){
-            res.send("email already exist");
-        }
         res.json(createUser);
     }catch(e){
 
@@ -71,15 +67,15 @@ router.post("/user", async (req: Request, res: Response)=>{
 router.put("/user/:id", async (req: Request, res: Response)=>{
     try{
         const {id} = req.params;
-        const {name , email} = req.body;
+        const {username , email} = req.body;
 
         const updateUser = await prisma.user.update({
             where:{
                 id
             },
             data:{
-                name,
-                email
+                email,
+                username
             }
         })
 
@@ -113,6 +109,7 @@ router.delete("/user/:id", async (req: Request, res: Response)=>{
             }
         });
 
+        
         const transaction = await prisma.$transaction([deletePost, deleteUser,userIdDelete]);
     
         res.send("user deleted succcessfully");
