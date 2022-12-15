@@ -39,11 +39,12 @@ router.get("/user/:id", async(req: Request, res: Response)=>{
 
 router.post("/user", async (req: Request, res: Response)=>{
     try{
-        const {username , email, title, bio} = req.body
+        const {username , email, age, title, bio} = req.body
         const createUser = await prisma.user.create({
             data:{
                 username,
                 email,
+                age,
                 posts: {
                     create:{title}
                 },
@@ -67,7 +68,7 @@ router.post("/user", async (req: Request, res: Response)=>{
 router.put("/user/:id", async (req: Request, res: Response)=>{
     try{
         const {id} = req.params;
-        const {username , email} = req.body;
+        const {username , email, age} = req.body;
 
         const updateUser = await prisma.user.update({
             where:{
@@ -75,7 +76,8 @@ router.put("/user/:id", async (req: Request, res: Response)=>{
             },
             data:{
                 email,
-                username
+                username,
+                age
             }
         })
 
